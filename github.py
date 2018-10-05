@@ -1,15 +1,14 @@
-from github import Github
 from config import github_token
-import requests
+import requests, json
 
-g = Github(github_token)
-url = 'https://api.github.com/graphql'
-json = { 'query' : '{ viewer { repositories(first: 30) { totalCount pageInfo { hasNextPage endCursor } edges { node { name } } } } }' }
-api_token = "your api token here..."
-headers = {'Authorization': 'token %s' % github_token}
+_url = 'https://api.github.com/graphql'
+_json = { 'query' : '{ viewer { repositories(first: 30) { totalCount pageInfo { hasNextPage endCursor } edges { node { name } } } } }' }
+_headers = {'Authorization': 'token %s' % github_token}
 
-r = requests.post(url=url, json=json, headers=headers)
-print (r.text)
+r = requests.post(url=_url, json=_json, headers=_headers)
+json_res = json.loads(r.text)
+
+print(json.dumps(json_res, indent=2))
 
 # for repo in g.get_user().get_repos():
 #     print(repo.name)
